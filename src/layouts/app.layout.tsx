@@ -3,6 +3,8 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 
+import Loader from "~/components/Loader/Loader";
+
 import appBg from "~/assets/images/app-bg.webp";
 
 type Props = {
@@ -20,9 +22,6 @@ const AppLayout = ({ children }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (session.status === "loading") {
-    return <div>Loading...</div>;
-  }
   return (
     <>
       <Head>
@@ -34,7 +33,9 @@ const AppLayout = ({ children }: Props) => {
         className="flex h-full min-h-screen w-full items-center justify-center px-4 py-5"
         style={{ backgroundImage: `url(${appBg.src})` }}
       >
-        <div className="w-full max-w-xl">{children}</div>
+        <div className="w-full max-w-lg">
+          {session.status === "loading" ? <Loader /> : children}
+        </div>
       </main>
     </>
   );

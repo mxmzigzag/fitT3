@@ -1,4 +1,5 @@
 import { type NextPage } from "next";
+import Days from "~/components/Days/Days";
 
 import CardLayout from "~/layouts/card.layout";
 
@@ -11,6 +12,7 @@ const Home: NextPage = () => {
       <p className="font-italic mb-5 text-sm italic text-white">
         Select a day and start adding ingredients!
       </p>
+      <Days />
     </CardLayout>
   );
 };

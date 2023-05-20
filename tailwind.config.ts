@@ -6,6 +6,8 @@ export default {
     extend: {
       colors: {
         fDark: "#292524",
+        fOrange: "#f8b26a",
+        fRed: "#e15b64",
       },
       fontFamily: {
         rubik: ["Rubik", "sans-serif"],
