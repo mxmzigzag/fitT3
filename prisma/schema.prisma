@@ -57,26 +57,24 @@ model VerificationToken {
     @@unique([identifier, token])
 }
 
+enum MealTypes {
+    BREAKFAST
+    LUNCH
+    DINNER
+}
+
 model Ingredient {
     id           String @id @default(uuid())
     name         String @unique
     carbohydrate Int
     protein      Int
     fat          Int
+    calories     Int
 
-    meal   Meal?   @relation(fields: [mealId], references: [id])
-    mealId String?
+    meals Meal[]
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-
-    @@index([mealId])
-}
-
-enum MealTypes {
-    BREAKFAST
-    LUNCH
-    DINNER
 }
 
 model Meal {

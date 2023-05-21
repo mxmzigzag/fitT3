@@ -19,11 +19,10 @@ const Login: NextPage = () => {
   }, []);
 
   return (
-    <CardLayout>
-      <h1 className="mb-3 font-rubik text-4xl font-bold text-white">Log In</h1>
-      <p className="font-italic mb-5 text-sm italic text-white">
-        That&apos;s easy! Just use your Google account :D
-      </p>
+    <CardLayout
+      title="Log In"
+      subtitle="That's easy! Just use your Google account :D"
+    >
       <button
         onClick={() => void signIn()}
         className="rounded-lg bg-white p-3 hover:bg-slate-100"
