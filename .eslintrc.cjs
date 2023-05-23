@@ -13,6 +13,15 @@ const config = {
         "@typescript-eslint/no-unsafe-argument": "off",
         "@typescript-eslint/no-unsafe-assignment": "off",
         "@typescript-eslint/restrict-plus-operands": "off",
+        "@typescript-eslint/ban-ts-comment": "off",
+        "@typescript-eslint/no-misused-promises": [
+          2,
+          {
+            checksVoidReturn: {
+              attributes: false,
+            },
+          },
+        ],
       },
       files: ["*.ts", "*.tsx"],
       parserOptions: {

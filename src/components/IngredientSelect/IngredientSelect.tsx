@@ -6,9 +6,12 @@ import type { Ingredient } from "~/types/ingredient.types";
 type Props = {
   ingredients: Ingredient[];
   onSelect: (_: Ingredient) => void;
+  onCustom?: () => void;
 };
 
-function IngredientSelect({ ingredients, onSelect }: Props) {
+const listButtonStyles = "hover:bg-fDark rounded transition-all";
+
+function IngredientSelect({ ingredients, onSelect, onCustom }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -20,15 +23,33 @@ function IngredientSelect({ ingredients, onSelect }: Props) {
   useOnClickOutside(ref, () => setIsOpen(false));
 
   return (
-    <div ref={ref} className="relative flex flex-col">
-      <button onClick={() => setIsOpen(!isOpen)}>Select ingredient</button>
+    <div ref={ref} className="relative">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full rounded bg-fOrange px-1 py-0.5 text-fDark"
+      >
+        Select ingredient
+      </button>
       {isOpen && (
-        <div className="absolute left-0 top-0 flex flex-col">
+        <div className="absolute left-0 top-7 flex w-full flex-col rounded bg-fOrange px-1.5 py-1 drop-shadow-base">
           {ingredients.map((ing) => (
-            <button key={ing.id} onClick={() => handleSelect(ing)}>
+            <button
+              key={ing.id}
+              onClick={() => handleSelect(ing)}
+              className={listButtonStyles}
+            >
               {ing.name}
             </button>
           ))}
+          <button
+            onClick={() => {
+              onCustom && onCustom();
+              setIsOpen(false);
+            }}
+            className={listButtonStyles}
+          >
+            Custom
+          </button>
         </div>
       )}
     </div>

@@ -1,16 +1,19 @@
 import React, { memo } from "react";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import Button from "../Button/Button";
 import DatePicker from "../DatePicker/DatePicker";
 import type { DayFormValues } from "./types";
 import { createEmptyMeal } from "./utils";
 import { MealTypes } from "@prisma/client";
-import FormIngredients from "./FormIngredients";
+import AddFormIngredients from "./ingredients/AddFormIngredients";
 import { api } from "~/utils/api";
-import type { Ingredient } from "~/types/ingredient.types";
+import type { EditableIngredient, Ingredient } from "~/types/ingredient.types";
+import { createDaySchema } from "~/types/day.types";
 
 const AddForm = () => {
   const { data: allIngredients } = api.ingredient.getAllIngredients.useQuery();
+  const createDay = api.day.create.useMutation();
 
   const defaultValues: DayFormValues = {
     date: undefined,
@@ -21,15 +24,38 @@ const AddForm = () => {
     formState: { errors },
     setValue,
     handleSubmit,
+    setError,
     watch,
   } = useForm({
     defaultValues,
-    // resolver: yupResolver(sche),
+    resolver: zodResolver(createDaySchema),
   });
   const formState = watch();
+  console.log("ERRS:", errors);
 
   const onSubmit = (data: DayFormValues) => {
-    console.log("subm", data);
+    try {
+      if (!data.date) {
+        setError("date", { message: "Date is required!" });
+        return;
+      }
+      const validData = {
+        date: data.date,
+        meals: data.meals.map((meal) => ({
+          ...meal,
+          ingredients: meal.ingredients.map((ing) => ({
+            id: ing.id,
+            name: ing.name,
+            protein: Number(ing.protein),
+            fat: Number(ing.fat),
+            carbohydrate: Number(ing.carbohydrate),
+          })),
+        })),
+      };
+      createDay.mutate(validData);
+    } catch (error) {
+      console.log("ERR:", error);
+    }
   };
 
   const handleChangeDate = (date: Date | undefined) => {
@@ -54,6 +80,22 @@ const AddForm = () => {
         return {
           ...meal,
           ingredients: [...meal.ingredients, ingredient],
+        };
+      }
+      return meal;
+    });
+    setValue("meals", updMeals);
+  };
+
+  const handleUpdateIngredient = (mealId: string, ingredient: Ingredient) => {
+    const updMeals = formState.meals.map((meal) => {
+      if (meal.id === mealId) {
+        return {
+          ...meal,
+          ingredients: meal.ingredients.map((ingr) => {
+            if (ingr.id === ingredient.id) return ingredient;
+            return ingr;
+          }),
         };
       }
       return meal;
@@ -86,11 +128,12 @@ const AddForm = () => {
           <React.Fragment key={meal.id}>
             <div className="flex flex-col">
               <MealHeader title={meal.type} />
-              <FormIngredients
+              <AddFormIngredients
                 mealId={meal.id}
-                formIngredients={meal.ingredients}
+                formIngredients={meal.ingredients as EditableIngredient[]}
                 allIngredients={allIngredients}
                 handleAddIngredient={handleAddIngredient}
+                handleUpdateIngredient={handleUpdateIngredient}
                 handleRemoveIngredient={handleRemoveIngredient}
               />
             </div>

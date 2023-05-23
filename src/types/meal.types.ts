@@ -6,10 +6,10 @@ export const mealSchema = z.object({
   type: z.enum(["BREAKFAST", "LUNCH", "DINNER"]),
 
   ingredients: z.array(ingredientSchema),
-  dayId: z.string().uuid(),
+  dayId: z.string().uuid().optional(),
 
-  createdAt: z.date(),
-  updatedAt: z.date(),
+  createdAt: z.date().optional(),
+  updatedAt: z.date().optional(),
 });
 
 export type Meal = z.infer<typeof mealSchema>;

@@ -1,5 +1,4 @@
 import z from "zod";
-import { mealSchema } from "./meal.types";
 
 export const ingredientSchema = z.object({
   id: z.string().uuid(),
@@ -8,10 +7,12 @@ export const ingredientSchema = z.object({
   protein: z.number(),
   fat: z.number(),
 
-  meals: z.array(mealSchema),
-
-  createdAt: z.date(),
-  updatedAt: z.date(),
+  createdAt: z.date().optional(),
+  updatedAt: z.date().optional(),
+});
+export const editableIngredientSchema = ingredientSchema.extend({
+  isEditable: z.boolean(),
 });
 
 export type Ingredient = z.infer<typeof ingredientSchema>;
+export type EditableIngredient = z.infer<typeof editableIngredientSchema>;

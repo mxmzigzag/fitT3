@@ -1,24 +1,36 @@
 import React from "react";
+import { v4 as uuid } from "uuid";
 import TrashIcon from "~/assets/icons/trash.icon";
-import IngredientSelect from "../IngredientSelect/IngredientSelect";
-import type { Ingredient } from "~/types/ingredient.types";
+import IngredientSelect from "../../IngredientSelect/IngredientSelect";
+import type { EditableIngredient, Ingredient } from "~/types/ingredient.types";
+import EditableIngredientRow from "./EditableIngredientRow";
 
 type Props = {
   mealId: string;
-  formIngredients: Ingredient[];
+  formIngredients: EditableIngredient[];
   allIngredients: Ingredient[];
   handleAddIngredient: (mealId: string, ingredient: Ingredient) => void;
+  handleUpdateIngredient: (mealId: string, ingredient: Ingredient) => void;
   handleRemoveIngredient: (mealId: string, ingredientId: string) => void;
 };
 
 const rowStyles =
   "grid grid-cols-[2%_30%_10%_10%_20%_15%] gap-3 mb-2.5 text-white text-sm";
 
-const FormIngredients = ({
+const EMPTY_EDITABLE_INGREDIENT: Omit<EditableIngredient, "id"> = {
+  name: "Name",
+  protein: 0,
+  fat: 0,
+  carbohydrate: 0,
+  isEditable: true,
+};
+
+const AddFormIngredients = ({
   mealId,
   formIngredients,
   allIngredients,
   handleAddIngredient,
+  handleUpdateIngredient,
   handleRemoveIngredient,
 }: Props) => {
   return (
@@ -34,10 +46,20 @@ const FormIngredients = ({
       {formIngredients.map((ingredient, idx) => (
         <div key={ingredient.id} className={rowStyles}>
           <span>{idx + 1}</span>
-          <span>{ingredient.name}</span>
-          <span>{ingredient.protein}</span>
-          <span>{ingredient.fat}</span>
-          <span>{ingredient.carbohydrate}</span>
+          {ingredient.isEditable ? (
+            <EditableIngredientRow
+              mealId={mealId}
+              ingredient={ingredient}
+              handleUpdate={handleUpdateIngredient}
+            />
+          ) : (
+            <>
+              <span>{ingredient.name}</span>
+              <span>{ingredient.protein}</span>
+              <span>{ingredient.fat}</span>
+              <span>{ingredient.carbohydrate}</span>
+            </>
+          )}
           <button onClick={() => handleRemoveIngredient(mealId, ingredient.id)}>
             <TrashIcon />
           </button>
@@ -48,14 +70,16 @@ const FormIngredients = ({
         <IngredientSelect
           ingredients={allIngredients}
           onSelect={(ingredient) => handleAddIngredient(mealId, ingredient)}
+          onCustom={() =>
+            handleAddIngredient(mealId, {
+              ...EMPTY_EDITABLE_INGREDIENT,
+              id: uuid(),
+            })
+          }
         />
-        <span />
-        <span />
-        <span />
-        <span />
       </div>
     </div>
   );
 };
 
-export default FormIngredients;
+export default AddFormIngredients;
