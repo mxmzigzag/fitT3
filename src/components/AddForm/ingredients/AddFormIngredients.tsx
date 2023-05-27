@@ -72,6 +72,7 @@ const AddFormIngredients = ({
         <span>{formIngredients.length + 1}</span>
         <IngredientSelect
           ingredients={allIngredients}
+          formIngredients={formIngredients}
           onSelect={(ingredient) => handleAddIngredient(mealId, ingredient)}
           onCustom={() =>
             handleAddIngredient(mealId, {
