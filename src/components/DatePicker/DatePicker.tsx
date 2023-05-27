@@ -38,7 +38,7 @@ const DatePicker = ({ selected, onSelect }: Props) => {
       </button>
       {isOpen && (
         <div
-          className="absolute left-1/2 top-8 z-50 -translate-x-1/2 rounded-lg bg-fOrange drop-shadow-base"
+          className="shadow-base absolute left-1/2 top-8 z-50 -translate-x-1/2 rounded-lg bg-fOrange"
           ref={pickerRef}
         >
           <DayPicker
