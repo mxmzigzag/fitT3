@@ -6,6 +6,8 @@ type Props = {
   size?: "sm" | "md" | "lg";
   onClick?: () => void;
   className?: string;
+  loading?: boolean;
+  disabled?: boolean;
   children: React.ReactNode;
 };
 
@@ -15,6 +17,8 @@ const Button = ({
   size = "md",
   onClick,
   className = "",
+  disabled = false,
+  loading = false,
   children,
   ...props
 }: Props) => {
@@ -34,9 +38,10 @@ const Button = ({
       type={type}
       onClick={onClick}
       className={`${btnVariantClasses[variant]} ${btnSizeClasses[size]} ${className}`}
+      disabled={loading || disabled}
       {...props}
     >
-      {children}
+      {loading ? "loading..." : children}
     </button>
   );
 };

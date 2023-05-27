@@ -15,13 +15,14 @@ type Props = {
 };
 
 const rowStyles =
-  "grid grid-cols-[2%_30%_10%_10%_20%_15%] gap-3 mb-2.5 text-white text-sm";
+  "grid grid-cols-[2%_30%_10%_10%_10%_10%_15%] gap-3 mb-2.5 text-white text-sm";
 
 const EMPTY_EDITABLE_INGREDIENT: Omit<EditableIngredient, "id"> = {
   name: "Name",
   protein: 0,
   fat: 0,
   carbohydrate: 0,
+  calories: 0,
   isEditable: true,
 };
 
@@ -40,7 +41,8 @@ const AddFormIngredients = ({
         <span>Name</span>
         <span>Protein</span>
         <span>Fat</span>
-        <span>Carbohydrate</span>
+        <span>Carb.</span>
+        <span>Calories</span>
         <span />
       </div>
       {formIngredients.map((ingredient, idx) => (
@@ -58,6 +60,7 @@ const AddFormIngredients = ({
               <span>{ingredient.protein}</span>
               <span>{ingredient.fat}</span>
               <span>{ingredient.carbohydrate}</span>
+              <span>{ingredient.calories}</span>
             </>
           )}
           <button onClick={() => handleRemoveIngredient(mealId, ingredient.id)}>

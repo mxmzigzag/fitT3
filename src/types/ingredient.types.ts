@@ -6,6 +6,7 @@ export const ingredientSchema = z.object({
   carbohydrate: z.number(),
   protein: z.number(),
   fat: z.number(),
+  calories: z.number(),
 
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),

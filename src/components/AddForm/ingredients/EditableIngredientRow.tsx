@@ -63,6 +63,15 @@ function EditableIngredientRow({ mealId, ingredient, handleUpdate }: Props) {
         onBlur={onBlur}
         className={inputStyles}
       />
+      <input
+        type="number"
+        name="calories"
+        value={ingred.calories}
+        min={0}
+        onChange={onChange}
+        onBlur={onBlur}
+        className={inputStyles}
+      />
     </>
   );
 }

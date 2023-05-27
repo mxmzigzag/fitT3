@@ -25,15 +25,17 @@ function IngredientSelect({ ingredients, onSelect, onCustom }: Props) {
   return (
     <div ref={ref} className="relative">
       <button
+        type="button"
         onClick={() => setIsOpen(!isOpen)}
         className="w-full rounded bg-fOrange px-1 py-0.5 text-fDark"
       >
         Select ingredient
       </button>
       {isOpen && (
-        <div className="absolute left-0 top-7 flex w-full flex-col rounded bg-fOrange px-1.5 py-1 drop-shadow-base">
+        <div className="absolute left-0 top-7 z-10 flex max-h-[140px] w-full flex-col overflow-y-scroll rounded bg-fOrange px-1.5 py-1 drop-shadow-base">
           {ingredients.map((ing) => (
             <button
+              type="button"
               key={ing.id}
               onClick={() => handleSelect(ing)}
               className={listButtonStyles}
@@ -42,6 +44,7 @@ function IngredientSelect({ ingredients, onSelect, onCustom }: Props) {
             </button>
           ))}
           <button
+            type="button"
             onClick={() => {
               onCustom && onCustom();
               setIsOpen(false);

@@ -6,8 +6,10 @@ import { useRouter } from "next/router";
 
 const Days = () => {
   const router = useRouter();
-  const { data, isLoading } = api.ingredient.getAllIngredients.useQuery();
-  console.log("data", isLoading, data);
+  const { data: days } = api.day.getDaysOfUser.useQuery();
+  const { data: ingredients } = api.ingredient.getAllIngredients.useQuery();
+  console.log("days:", days);
+  console.log("ingrs:", ingredients);
   return (
     <div className="flex w-full flex-col">
       <p className="text-center text-white">Days list</p>

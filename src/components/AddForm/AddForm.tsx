@@ -1,17 +1,22 @@
 import React, { memo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Button from "../Button/Button";
-import DatePicker from "../DatePicker/DatePicker";
+import { MealTypes } from "@prisma/client";
+import { useRouter } from "next/router";
+import { toast } from "react-hot-toast";
+
 import type { DayFormValues } from "./types";
 import { createEmptyMeal } from "./utils";
-import { MealTypes } from "@prisma/client";
-import AddFormIngredients from "./ingredients/AddFormIngredients";
 import { api } from "~/utils/api";
-import type { EditableIngredient, Ingredient } from "~/types/ingredient.types";
 import { createDaySchema } from "~/types/day.types";
+import type { EditableIngredient, Ingredient } from "~/types/ingredient.types";
+
+import Button from "../Button/Button";
+import DatePicker from "../DatePicker/DatePicker";
+import AddFormIngredients from "./ingredients/AddFormIngredients";
 
 const AddForm = () => {
+  const router = useRouter();
   const { data: allIngredients } = api.ingredient.getAllIngredients.useQuery();
   const createDay = api.day.create.useMutation();
 
@@ -23,6 +28,7 @@ const AddForm = () => {
   const {
     formState: { errors },
     setValue,
+    clearErrors,
     handleSubmit,
     setError,
     watch,
@@ -31,7 +37,6 @@ const AddForm = () => {
     resolver: zodResolver(createDaySchema),
   });
   const formState = watch();
-  console.log("ERRS:", errors);
 
   const onSubmit = (data: DayFormValues) => {
     try {
@@ -49,17 +54,24 @@ const AddForm = () => {
             protein: Number(ing.protein),
             fat: Number(ing.fat),
             carbohydrate: Number(ing.carbohydrate),
+            calories: Number(ing.calories),
           })),
         })),
       };
       createDay.mutate(validData);
+      void router.push("/");
+      toast.success("Day added!");
     } catch (error) {
       console.log("ERR:", error);
+      toast.error("Something is not right. Check console.");
     }
   };
 
   const handleChangeDate = (date: Date | undefined) => {
-    if (date) setValue("date", date);
+    if (date) {
+      clearErrors("date");
+      setValue("date", date);
+    }
   };
 
   const handleAddMeal = () => {
@@ -143,7 +155,19 @@ const AddForm = () => {
           </React.Fragment>
         ))}
       </div>
-      <Button type="submit">Save</Button>
+      <div className="mb-2.5 flex flex-col">
+        {Object.entries(errors).map(([key, value]) => (
+          <div
+            key={key}
+            className="flex items-center rounded bg-fRed px-1.5 py-0.5"
+          >
+            {key}: {value.message}
+          </div>
+        ))}
+      </div>
+      <Button type="submit" disabled={createDay.isLoading}>
+        Save
+      </Button>
     </form>
   );
 };

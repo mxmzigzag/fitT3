@@ -16,11 +16,11 @@ const AppLayout = ({ children }: Props) => {
   const session = useSession();
 
   useEffect(() => {
-    if (session.status !== "loading" && session.status !== "authenticated") {
+    if (session.status === "unauthenticated") {
       void router.replace("/login");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [session.status]);
 
   return (
     <>
