@@ -31,39 +31,24 @@ export const dayRouter = createTRPCRouter({
       console.log("DAY:", day, date, meals);
       meals.map((meal) =>
         meal.ingredients.map(async (ingr) => {
-          const existingIngr = await ctx.prisma.ingredient.findUnique({
-            where: { name: ingr.name },
+          const { ingredient, weight } = ingr;
+
+          await ctx.prisma.ingredientWithWeight.create({
+            data: {
+              ingredient: {
+                connectOrCreate: {
+                  where: { id: ingredient.id },
+                  create: { ...ingredient },
+                },
+              },
+              weight,
+              meal: {
+                connect: {
+                  id: meal.id,
+                },
+              },
+            },
           });
-          console.log("ingr:", meal.type, ingr, existingIngr);
-          if (existingIngr) {
-            await ctx.prisma.ingredient.update({
-              where: {
-                name: existingIngr.name,
-              },
-              data: {
-                meals: {
-                  connect: {
-                    id: meal.id,
-                  },
-                },
-              },
-            });
-          } else {
-            await ctx.prisma.ingredient.create({
-              data: {
-                name: ingr.name,
-                protein: ingr.protein,
-                fat: ingr.fat,
-                carbohydrate: ingr.carbohydrate,
-                calories: ingr.calories,
-                meals: {
-                  connect: {
-                    id: meal.id,
-                  },
-                },
-              },
-            });
-          }
           return ingr;
         })
       );

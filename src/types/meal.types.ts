@@ -1,11 +1,11 @@
 import z from "zod";
-import { ingredientSchema } from "./ingredient.types";
+import { ingredientWithWeightSchema } from "./ingredient.types";
 
 export const mealSchema = z.object({
   id: z.string().uuid(),
   type: z.enum(["BREAKFAST", "LUNCH", "DINNER"]),
 
-  ingredients: z.array(ingredientSchema),
+  ingredients: z.array(ingredientWithWeightSchema),
   dayId: z.string().uuid().optional(),
 
   createdAt: z.date().optional(),

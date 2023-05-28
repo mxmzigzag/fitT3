@@ -11,9 +11,14 @@ export const ingredientSchema = z.object({
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
 });
-export const editableIngredientSchema = ingredientSchema.extend({
+export const ingredientWithWeightSchema = z.object({
+  ingredient: ingredientSchema,
+  weight: z.number(),
+});
+export const editableIngredientSchema = ingredientWithWeightSchema.extend({
   isEditable: z.boolean(),
 });
 
 export type Ingredient = z.infer<typeof ingredientSchema>;
+export type IngredientWithWeight = z.infer<typeof ingredientWithWeightSchema>;
 export type EditableIngredient = z.infer<typeof editableIngredientSchema>;

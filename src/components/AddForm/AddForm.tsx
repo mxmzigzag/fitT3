@@ -9,7 +9,10 @@ import type { DayFormValues } from "./types";
 import { createEmptyMeal } from "./utils";
 import { api } from "~/utils/api";
 import { createDaySchema } from "~/types/day.types";
-import type { EditableIngredient, Ingredient } from "~/types/ingredient.types";
+import type {
+  EditableIngredient,
+  IngredientWithWeight,
+} from "~/types/ingredient.types";
 
 import Button from "../Button/Button";
 import DatePicker from "../DatePicker/DatePicker";
@@ -48,13 +51,16 @@ const AddForm = () => {
         date: data.date,
         meals: data.meals.map((meal) => ({
           ...meal,
-          ingredients: meal.ingredients.map((ing) => ({
-            id: ing.id,
-            name: ing.name,
-            protein: Number(ing.protein),
-            fat: Number(ing.fat),
-            carbohydrate: Number(ing.carbohydrate),
-            calories: Number(ing.calories),
+          ingredients: meal.ingredients.map(({ ingredient, weight }) => ({
+            ingredient: {
+              id: ingredient.id,
+              name: ingredient.name,
+              protein: Number(ingredient.protein),
+              fat: Number(ingredient.fat),
+              carbohydrate: Number(ingredient.carbohydrate),
+              calories: Number(ingredient.calories),
+            },
+            weight,
           })),
         })),
       };
@@ -86,7 +92,10 @@ const AddForm = () => {
     ]);
   };
 
-  const handleAddIngredient = (mealId: string, ingredient: Ingredient) => {
+  const handleAddIngredient = (
+    mealId: string,
+    ingredient: IngredientWithWeight
+  ) => {
     const updMeals = formState.meals.map((meal) => {
       if (meal.id === mealId) {
         return {
@@ -99,13 +108,17 @@ const AddForm = () => {
     setValue("meals", updMeals);
   };
 
-  const handleUpdateIngredient = (mealId: string, ingredient: Ingredient) => {
+  const handleUpdateIngredient = (
+    mealId: string,
+    mealIngredient: IngredientWithWeight
+  ) => {
     const updMeals = formState.meals.map((meal) => {
       if (meal.id === mealId) {
         return {
           ...meal,
           ingredients: meal.ingredients.map((ingr) => {
-            if (ingr.id === ingredient.id) return ingredient;
+            if (ingr.ingredient.id === mealIngredient.ingredient.id)
+              return mealIngredient;
             return ingr;
           }),
         };
@@ -121,7 +134,7 @@ const AddForm = () => {
         return {
           ...meal,
           ingredients: meal.ingredients.filter(
-            (ingr) => ingr.id !== ingredientId
+            (ingr) => ingr.ingredient.id !== ingredientId
           ),
         };
       }

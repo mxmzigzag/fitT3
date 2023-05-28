@@ -1,12 +1,14 @@
-// import type { Ingredient } from "@prisma/client";
 import React, { memo, useMemo, useRef, useState } from "react";
 import SearchIcon from "~/assets/icons/search.icon";
 import useOnClickOutside from "~/hooks/useClickOutside";
-import type { Ingredient } from "~/types/ingredient.types";
+import type {
+  Ingredient,
+  IngredientWithWeight,
+} from "~/types/ingredient.types";
 
 type Props = {
   ingredients: Ingredient[];
-  formIngredients: Ingredient[];
+  formIngredients: IngredientWithWeight[];
   onSelect: (_: Ingredient) => void;
   onCustom?: () => void;
 };
@@ -29,7 +31,7 @@ function IngredientSelect({
       ingredients.filter(
         (ingr) =>
           ingr.name.toLowerCase().includes(search.toLowerCase()) &&
-          !formIngredients.find((fIng) => fIng.name === ingr.name)
+          !formIngredients.find((fIng) => fIng.ingredient.name === ingr.name)
       ),
     [search, ingredients, formIngredients]
   );
@@ -48,7 +50,7 @@ function IngredientSelect({
         onClick={() => setIsOpen(!isOpen)}
         className="w-full rounded bg-fOrange px-1 py-0.5 text-fDark"
       >
-        Select ingredient
+        Add ingredient
       </button>
       {isOpen && (
         <div className="absolute left-0 top-7 z-10 flex max-h-[140px] w-full flex-col overflow-y-scroll rounded bg-fOrange px-1.5 py-1 shadow-base">

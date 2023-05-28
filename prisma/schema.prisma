@@ -58,10 +58,51 @@ model VerificationToken {
     @@unique([identifier, token])
 }
 
+model Day {
+    id   String   @id @default(uuid())
+    date DateTime
+
+    meals Meal[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    user      User?    @relation(fields: [userId], references: [id])
+    userId    String?
+
+    @@index([userId])
+}
+
 enum MealTypes {
     BREAKFAST
     LUNCH
     DINNER
+}
+
+model Meal {
+    id   String    @id @default(uuid())
+    type MealTypes
+
+    ingredients IngredientWithWeight[]
+    dayId       String?
+    day         Day?                   @relation(fields: [dayId], references: [id], onDelete: Cascade)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([dayId])
+}
+
+model IngredientWithWeight {
+    id     String @id @default(uuid())
+    weight Int
+
+    ingredient   Ingredient @relation(fields: [ingredientId], references: [id], onDelete: Cascade)
+    ingredientId String
+    meal         Meal       @relation(fields: [mealId], references: [id], onDelete: Cascade)
+    mealId       String
+
+    @@index([ingredientId])
+    @@index([mealId])
 }
 
 model Ingredient {
@@ -72,36 +113,7 @@ model Ingredient {
     fat          Int
     calories     Int
 
-    meals Meal[]
-
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-}
-
-model Meal {
-    id   String    @id @default(uuid())
-    type MealTypes
-
-    ingredients Ingredient[]
-    dayId       String?
-    day         Day?         @relation(fields: [dayId], references: [id], onDelete: Cascade)
-
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    @@index([dayId])
-}
-
-model Day {
-    id   String   @id @default(uuid())
-    date DateTime
-
-    meals Meal[]
-
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    User      User?    @relation(fields: [userId], references: [id])
-    userId    String?
-
-    @@index([userId])
+    createdAt            DateTime               @default(now())
+    updatedAt            DateTime               @updatedAt
+    IngredientWithWeight IngredientWithWeight[]
 }
