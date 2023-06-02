@@ -7,8 +7,15 @@ export const dayRouter = createTRPCRouter({
       where: {
         userId: ctx.session.user.id,
       },
+      orderBy: [{ date: "asc" }],
       include: {
-        meals: true,
+        meals: {
+          include: {
+            ingredients: {
+              include: { ingredient: true },
+            },
+          },
+        },
       },
     });
   }),
@@ -28,7 +35,6 @@ export const dayRouter = createTRPCRouter({
         },
       });
 
-      console.log("DAY:", day, date, meals);
       meals.map((meal) =>
         meal.ingredients.map(async (ingr) => {
           const { ingredient, weight } = ingr;

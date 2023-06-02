@@ -4,3 +4,9 @@ export type IconProps = {
   color?: string;
   className?: string;
 };
+
+export type SquaredIconProps = {
+  size?: number;
+  color?: string;
+  className?: string;
+};

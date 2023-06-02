@@ -6,6 +6,8 @@ export default {
     extend: {
       colors: {
         fDark: "#292524",
+        fDayBg: "#201c1c",
+        fDayHeaderBg: "#151313",
         fOrange: "#f8b26a",
         fRed: "#e15b64",
       },
