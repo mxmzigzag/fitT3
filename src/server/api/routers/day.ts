@@ -1,3 +1,4 @@
+import { TRPCError } from "@trpc/server";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { createDaySchema } from "~/types/day.types";
 
@@ -22,6 +23,18 @@ export const dayRouter = createTRPCRouter({
   create: protectedProcedure
     .input(createDaySchema)
     .mutation(async ({ input: { date, meals }, ctx }) => {
+      const dayWithThisDate = await ctx.prisma.day.findFirst({
+        where: {
+          date,
+        },
+      });
+      if (Boolean(dayWithThisDate)) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "This Date is already taken!",
+        });
+      }
+
       const day = await ctx.prisma.day.create({
         data: {
           userId: ctx.session.user.id,
