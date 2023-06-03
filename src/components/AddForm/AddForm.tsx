@@ -21,6 +21,7 @@ import AddFormIngredients from "./ingredients/AddFormIngredients";
 const AddForm = () => {
   const router = useRouter();
   const { data: allIngredients } = api.ingredient.getAllIngredients.useQuery();
+  const { data: usedDates } = api.day.getUsedDates.useQuery();
   const createDay = api.day.create.useMutation();
 
   const defaultValues: DayFormValues = {
@@ -143,11 +144,15 @@ const AddForm = () => {
     setValue("meals", updMeals);
   };
 
-  if (!allIngredients) return null;
+  if (!allIngredients || !usedDates) return null;
 
   return (
     <form name="day-form" onSubmit={handleSubmit(onSubmit)} className="w-full">
-      <DatePicker selected={formState.date} onSelect={handleChangeDate} />
+      <DatePicker
+        selected={formState.date}
+        onSelect={handleChangeDate}
+        disabledDates={usedDates.map(({ date }) => date)}
+      />
       <div className="mb-5 flex flex-col">
         {formState.meals.map((meal, idx) => (
           <React.Fragment key={meal.id}>

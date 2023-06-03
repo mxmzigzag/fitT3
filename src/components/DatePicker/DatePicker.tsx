@@ -10,9 +10,10 @@ import useOnClickOutside from "~/hooks/useClickOutside";
 type Props = {
   selected?: Date;
   onSelect: (date: Date | undefined) => void;
+  disabledDates: Date[];
 };
 
-const DatePicker = ({ selected, onSelect }: Props) => {
+const DatePicker = ({ selected, onSelect, disabledDates }: Props) => {
   const pickerRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -38,7 +39,7 @@ const DatePicker = ({ selected, onSelect }: Props) => {
       </button>
       {isOpen && (
         <div
-          className="shadow-base absolute left-1/2 top-8 z-50 -translate-x-1/2 rounded-lg bg-fOrange"
+          className="absolute left-1/2 top-8 z-50 -translate-x-1/2 rounded-lg bg-fOrange shadow-base"
           ref={pickerRef}
         >
           <DayPicker
@@ -48,6 +49,7 @@ const DatePicker = ({ selected, onSelect }: Props) => {
               onSelect(date);
               setIsOpen(false);
             }}
+            disabled={disabledDates}
           />
         </div>
       )}

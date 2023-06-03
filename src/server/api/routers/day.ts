@@ -61,4 +61,11 @@ export const dayRouter = createTRPCRouter({
 
       return day;
     }),
+  getUsedDates: protectedProcedure.query(({ ctx }) => {
+    return ctx.prisma.day.findMany({
+      select: {
+        date: true,
+      },
+    });
+  }),
 });
