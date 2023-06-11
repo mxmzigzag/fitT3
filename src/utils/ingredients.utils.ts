@@ -1,3 +1,5 @@
+import { formatValue } from ".";
+
 type calcIngredientWithWeightProps = {
   carbohydrate: number;
   fat: number;
@@ -11,7 +13,7 @@ export const calcIngredientWithWeight = ({
   fat,
   carbohydrate,
 }: calcIngredientWithWeightProps) => ({
-  protein: ((weight * protein) / 100).toFixed(2),
-  fat: ((weight * fat) / 100).toFixed(2),
-  carbohydrate: ((weight * carbohydrate) / 100).toFixed(2),
+  protein: formatValue((weight * protein) / 100),
+  fat: formatValue((weight * fat) / 100),
+  carbohydrate: formatValue((weight * carbohydrate) / 100),
 });
