@@ -50,6 +50,7 @@ function EditableIngredientRow({ mealId, ingredient, handleUpdate }: Props) {
       />
       <input
         type="number"
+        step="any"
         name="protein"
         value={ingred.ingredient.protein}
         min={0}
@@ -59,6 +60,7 @@ function EditableIngredientRow({ mealId, ingredient, handleUpdate }: Props) {
       />
       <input
         type="number"
+        step="any"
         name="fat"
         value={ingred.ingredient.fat}
         min={0}
@@ -68,6 +70,7 @@ function EditableIngredientRow({ mealId, ingredient, handleUpdate }: Props) {
       />
       <input
         type="number"
+        step="any"
         name="carbohydrate"
         value={ingred.ingredient.carbohydrate}
         min={0}
@@ -77,6 +80,7 @@ function EditableIngredientRow({ mealId, ingredient, handleUpdate }: Props) {
       />
       <input
         type="number"
+        step="any"
         name="calories"
         value={ingred.ingredient.calories}
         min={0}
@@ -86,6 +90,7 @@ function EditableIngredientRow({ mealId, ingredient, handleUpdate }: Props) {
       />
       <input
         type="number"
+        step="any"
         name="weight"
         value={ingred.weight}
         min={0}
