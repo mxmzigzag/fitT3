@@ -108,10 +108,10 @@ model IngredientWithWeight {
 model Ingredient {
     id           String @id @default(uuid())
     name         String @unique
-    carbohydrate Int
-    protein      Int
-    fat          Int
-    calories     Int
+    carbohydrate Float
+    protein      Float
+    fat          Float
+    calories     Float
 
     createdAt            DateTime               @default(now())
     updatedAt            DateTime               @updatedAt
