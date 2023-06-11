@@ -32,7 +32,7 @@ const rowStyles =
 const EMPTY_EDITABLE_INGREDIENT: EditableIngredient = {
   ingredient: {
     id: "",
-    name: "Name",
+    name: "",
     protein: 0,
     fat: 0,
     carbohydrate: 0,
@@ -87,7 +87,7 @@ const AddFormIngredients = ({
 
               <input
                 type="number"
-                name="fat"
+                name="weight"
                 min={0}
                 value={ingr.weight}
                 onChange={(e) =>

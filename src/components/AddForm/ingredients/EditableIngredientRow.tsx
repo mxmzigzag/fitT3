@@ -46,6 +46,7 @@ function EditableIngredientRow({ mealId, ingredient, handleUpdate }: Props) {
         onChange={onChangeIngredient}
         onBlur={onBlur}
         className={inputStyles}
+        placeholder="Ingredient"
         autoFocus
       />
       <input
@@ -56,6 +57,7 @@ function EditableIngredientRow({ mealId, ingredient, handleUpdate }: Props) {
         min={0}
         onChange={onChangeIngredient}
         onBlur={onBlur}
+        placeholder="0"
         className={inputStyles}
       />
       <input
@@ -66,6 +68,7 @@ function EditableIngredientRow({ mealId, ingredient, handleUpdate }: Props) {
         min={0}
         onChange={onChangeIngredient}
         onBlur={onBlur}
+        placeholder="0"
         className={inputStyles}
       />
       <input
@@ -76,6 +79,7 @@ function EditableIngredientRow({ mealId, ingredient, handleUpdate }: Props) {
         min={0}
         onChange={onChangeIngredient}
         onBlur={onBlur}
+        placeholder="0"
         className={inputStyles}
       />
       <input
@@ -86,6 +90,7 @@ function EditableIngredientRow({ mealId, ingredient, handleUpdate }: Props) {
         min={0}
         onChange={onChangeIngredient}
         onBlur={onBlur}
+        placeholder="0"
         className={inputStyles}
       />
       <input
@@ -96,6 +101,7 @@ function EditableIngredientRow({ mealId, ingredient, handleUpdate }: Props) {
         min={0}
         onChange={onChangeWeight}
         onBlur={onBlur}
+        placeholder="0"
         className={inputStyles}
       />
     </>
