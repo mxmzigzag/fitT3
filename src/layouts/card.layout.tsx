@@ -1,6 +1,8 @@
 import React from "react";
 import { useRouter } from "next/router";
 import BackIcon from "~/assets/icons/back.icon";
+import UserIcon from "~/assets/icons/user.icon";
+import Link from "next/link";
 
 type Props = {
   title: string;
@@ -34,6 +36,12 @@ const CardLayout = ({
           <BackIcon className="text-fDark" />
         </button>
       )}
+      <Link
+        href="/user"
+        className="absolute right-3 top-3 rounded-lg bg-fOrange p-1.5"
+      >
+        <UserIcon size={20} />
+      </Link>
     </div>
   );
 };

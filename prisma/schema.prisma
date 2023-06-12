@@ -47,6 +47,8 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
+
+    caloriesLimit Float @default(2300)
     days          Day[]
 }
 
